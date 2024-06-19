@@ -1,7 +1,7 @@
-import urllib.parse
-
-from dataclasses import dataclass
 import json
+import socket
+import urllib.parse
+from dataclasses import dataclass
 
 @dataclass()
 class ProxyRule:
@@ -79,3 +79,17 @@ class ProxyRule:
             The json string representation of the ProxyRule.
         """
         return json.dumps(self.__dict__)
+
+    @staticmethod
+    def proxy_test(url):
+        try:
+            parsed_url = urllib.parse.urlparse(url)
+            ip = parsed_url.hostname
+            port = parsed_url.port
+
+            with socket.create_connection((ip, port), timeout=5) as sock:
+                print(f"Proxy {url} available.")
+                return True
+        except Exception as e:
+            print(f"Error while reaching proxy {url} - {e}")
+            return False

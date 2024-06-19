@@ -65,7 +65,8 @@ class ProxyHandler:
             search_name: str = str(proxy_rule.wifi_ssid).lower().lstrip().rstrip()
             curr_name: str = wifi_name.lower().lstrip().rstrip()
             if search_name == curr_name:
-                return proxy_rule.proxy_address
+                if ProxyRule.proxy_test(proxy_rule.proxy_address):
+                    return proxy_rule.proxy_address
         return ""
 
     def set_proxy_event_loop(self, verbose: bool = True) -> None:
