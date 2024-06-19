@@ -25,7 +25,8 @@
   </Triggers>
   <Actions Context="Author">
     <Exec>
-      <Command>{LOCATION}\main.py</Command>
+      <Command>pythonw.exe</Command>
+      <Arguments>{LOCATION}\main.py</Arguments>
       <WorkingDirectory>{LOCATION}\</WorkingDirectory>
     </Exec>
   </Actions>
