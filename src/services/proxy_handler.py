@@ -106,7 +106,10 @@ class ProxyHandler:
         """
         # RegEdit
         exec_code(
-            'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /f',
+            r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /f',
+        )
+        exec_code(
+            r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /t REG_SZ /d "" /f',
         )
         # CMD Environment
         exec_code('setx http_proxy "%s"' % '')
@@ -143,10 +146,10 @@ class ProxyHandler:
         else:
             # RegEdit
             exec_code(
-                'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f',
+                r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f',
             )
             exec_code(
-                'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /t REG_SZ /d %s /f' % proxy_address,
+                r'reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /t REG_SZ /d %s /f' % proxy_address,
             )
             # CMD Environment
             exec_code('setx http_proxy "%s"' % proxy_address)
