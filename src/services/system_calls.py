@@ -1,5 +1,9 @@
-from subprocess import DEVNULL, STDOUT, check_call, check_output, run, CalledProcessError
+from subprocess import DEVNULL, STDOUT, STARTF_USESHOWWINDOW, STARTUPINFO, check_call, check_output, run, \
+    CalledProcessError
 from typing import Any
+
+startupinfo = STARTUPINFO()
+startupinfo.dwFlags |= STARTF_USESHOWWINDOW
 
 
 def exec_code(cmd: Any, verbose: bool = False) -> int:
@@ -24,10 +28,11 @@ def exec_code(cmd: Any, verbose: bool = False) -> int:
             stdout=None if verbose else DEVNULL,
             stderr=STDOUT,
             shell=True,
+            startupinfo=startupinfo,
         )
     except CalledProcessError as e:
         if verbose: print(e)
-    
+
 
 def exec_output(cmd: Any, verbose: bool = False) -> str:
     """
@@ -39,7 +44,7 @@ def exec_output(cmd: Any, verbose: bool = False) -> str:
         The command to execute.
     verbose : bool
         Whether to print the command and output.
-    
+
     RETURNS
     -------
     str
@@ -49,6 +54,7 @@ def exec_output(cmd: Any, verbose: bool = False) -> str:
         return check_output(
             cmd,
             stderr=STDOUT,
+            startupinfo=startupinfo,
         ).decode("UTF-8")
     except CalledProcessError as e:
         if verbose:
@@ -63,13 +69,13 @@ def powershell_exec_output(cmd: Any) -> str:
     ----------
     cmd : Any
         The command to execute.
-    
+
     RETURNS
     -------
     str
         The output of the command.
     """
     completed = run(
-        ["powershell", "-Command", cmd], capture_output=True,
+        ["powershell", "-Command", "-WindowStyle Hidden", cmd], capture_output=True, startupinfo=startupinfo,
     )
     return completed.stdout.decode("UTF-8")
