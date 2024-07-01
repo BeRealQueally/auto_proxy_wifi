@@ -22,7 +22,15 @@
       <StartBoundary>2021-11-22T12:24:00</StartBoundary>
       <Subscription>&lt;QueryList&gt;&lt;Query&gt;&lt;Select Path='Microsoft-Windows-WLAN-AutoConfig/Operational'&gt;*[System/EventID=8001]&lt;/Select&gt;&lt;/Query&gt;&lt;/QueryList&gt;</Subscription>
     </EventTrigger>
+    <LogonTrigger>
+      <Enabled>true</Enabled>
+    </LogonTrigger>
   </Triggers>
+  <Principals>
+    <Principal id="Author">
+      <RunLevel>HighestAvailable</RunLevel>
+    </Principal>
+  </Principals>
   <Actions Context="Author">
     <Exec>
       <Command>pythonw.exe</Command>
