@@ -86,6 +86,7 @@ class ProxyRule:
             parsed_url = urllib.parse.urlparse(url)
             ip = parsed_url.hostname
             port = parsed_url.port
+            print(f"Testing Proxy {url}")
 
             with socket.create_connection((ip, port), timeout=5) as sock:
                 print(f"Proxy {url} available.")
