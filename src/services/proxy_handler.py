@@ -2,7 +2,7 @@ from os import environ
 
 from models.proxy_rule import ProxyRule
 from services.system_calls import powershell_exec_output, exec_output, exec_code
-
+from locale import getpreferredencoding
 
 class ProxyHandler:
     """
@@ -181,11 +181,15 @@ class ProxyHandler:
         str
             The name (SSID) of the currently connected wifi network.
         """
-        out: str = exec_output(
-            ['netsh', 'WLAN', 'show', 'interfaces'],
-        )
-        out_lines: list = out.split("\n")
-        for line in out_lines:
-            if "SSID" in line and "BSSID" not in line:
-                return line.split(": ")[1]
+        try:
+            out: str = exec_output(
+                ['netsh', 'WLAN', 'show', 'interfaces']
+            )
+            out_lines: list = out.split("\n")
+            for line in out_lines:
+                if "SSID" in line and "BSSID" not in line:
+                    return line.split(": ")[1].encode(getpreferredencoding()).decode("utf-8")
+        except UnicodeDecodeError as e:
+            print(e)
+            return ""
         return ""

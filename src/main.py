@@ -1,16 +1,19 @@
 from models.proxy_rule import ProxyRule
 from services.proxy_handler import ProxyHandler
 from services.system_calls import exec_code
+from locale import getpreferredencoding
 
 if __name__ == "__main__":
+    # Avoid DHCP Problem
+    exec_code('ipconfig /release')
+    exec_code('ipconfig /renew')
+
+    print("Current System Encoding:", getpreferredencoding())
+
     # Proxy Rules for different networks
     proxy_rules: list = [
         ProxyRule("TP-LINK_POCKET_3020_8D8E88", "http://172.16.199.40:8080", "http"),
     ]
-
-    # Avoid DHCP Problem
-    exec_code('ipconfig /release')
-    exec_code('ipconfig /renew')
 
     # Initialize data
     proxy_handler: ProxyHandler = ProxyHandler(proxy_rules, ask_admin_permission=True)

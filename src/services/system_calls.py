@@ -1,6 +1,7 @@
 from subprocess import DEVNULL, STDOUT, STARTF_USESHOWWINDOW, STARTUPINFO, check_call, check_output, run, \
     CalledProcessError
 from typing import Any
+from locale import getpreferredencoding
 
 startupinfo = STARTUPINFO()
 startupinfo.dwFlags |= STARTF_USESHOWWINDOW
@@ -34,7 +35,7 @@ def exec_code(cmd: Any, verbose: bool = False) -> int:
         if verbose: print(e)
 
 
-def exec_output(cmd: Any, verbose: bool = False) -> str:
+def exec_output(cmd: Any, utf8: bool = False, verbose: bool = False) -> str:
     """
     Utility function to execute a command in bash and return the STDOUT output.
 
@@ -55,13 +56,13 @@ def exec_output(cmd: Any, verbose: bool = False) -> str:
             cmd,
             stderr=STDOUT,
             startupinfo=startupinfo,
-        ).decode("UTF-8")
+        ).decode("utf8" if utf8 else getpreferredencoding())
     except CalledProcessError as e:
         if verbose:
             print(e)
 
 
-def powershell_exec_output(cmd: Any) -> str:
+def powershell_exec_output(cmd: Any, utf8: bool = False,) -> str:
     """
     Utility function to execute a powershell command and return the STDOUT output.
 
@@ -78,4 +79,4 @@ def powershell_exec_output(cmd: Any) -> str:
     completed = run(
         ["powershell", "-Command", "-WindowStyle Hidden", cmd], capture_output=True, startupinfo=startupinfo,
     )
-    return completed.stdout.decode("UTF-8")
+    return completed.stdout.decode("utf8" if utf8 else getpreferredencoding())

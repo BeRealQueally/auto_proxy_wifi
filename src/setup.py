@@ -25,6 +25,7 @@ def generate_sch_task_config_xml(input_template_xml_name: str = "sch_task_config
 
 
 if __name__ == "__main__":
+    print('Start to Setup schedule task ')
     # Generates dynamic xml file "./sch_task_config.xml"
     generate_sch_task_config_xml()
 
