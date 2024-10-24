@@ -3,6 +3,7 @@ from os import environ
 from models.proxy_rule import ProxyRule
 from services.system_calls import powershell_exec_output, exec_output, exec_code
 from locale import getpreferredencoding
+from plyer import notification
 
 class ProxyHandler:
     """
@@ -67,6 +68,8 @@ class ProxyHandler:
             if search_name == curr_name:
                 if ProxyRule.proxy_test(proxy_rule.proxy_address):
                     return proxy_rule.proxy_address
+                else:
+                    notification.notify(title="Set Proxy Fail", message=f'{proxy_rule.wifi_ssid} has a failure proxy on {proxy_rule.proxy_address}',app_name="auto_proxy_wifi", timeout=10, ticker="auto_proxy_wifi")
         return ""
 
     def set_proxy_event_loop(self, verbose: bool = True) -> None:
